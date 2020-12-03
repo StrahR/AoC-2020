@@ -33,9 +33,7 @@ naloga2 = (\(a, b, c) -> a * b * c) . find (\(a, b, c) -> a + b + c == 2020)
 explode2 :: [Int] -> [(Int, Int)]
 explode2 xs = [(a, b) | a <- xs, b <- xs, a >= b]
 
--- concatMap
--- (\x -> map (x,) list)
--- list
+-- concatMap (\x -> map (x,) list) list
 
 explode3 :: [Int] -> [(Int, Int, Int)]
 explode3 xs = [(a, b, c) | a <- xs, b <- xs, a >= b, c <- xs, b >= c]
