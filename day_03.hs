@@ -1,5 +1,3 @@
-import Data.List.Split
-
 main = do
   input <- readFile "day_03.in"
   let input' = lines input
