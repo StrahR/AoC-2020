@@ -29,16 +29,15 @@ naloga1 = length . filter verifyPassport
 
 isValidHeight hgt =
   let hgtUnit "" = ""
-      hgtUnit (s : ss)
-        | s == 'c' = "cm"
-        | s == 'i' = "in"
-        | otherwise = hgtUnit ss
-   in if hgtUnit hgt == "cm"
-        then "150cm" <= hgt && hgt <= "193cm"
-        else (hgtUnit hgt == "in") && ("59in" <= hgt && hgt <= "76in")
+      hgtUnit ('c' : ss) = "cm"
+      hgtUnit ('i' : ss) = "in"
+      hgtUnit (_ : ss) = hgtUnit ss
+      hgtP "cm" hgt = "150cm" <= hgt && hgt <= "193cm"
+      hgtP "in" hgt = "59in" <= hgt && hgt <= "76in"
+      hgtP _ _ = False
+   in hgtP (hgtUnit hgt) hgt
 
-isValidHex ('#' : hex) = length hex == 6 && all (\c -> '0' <= c && c <= '9' || 'a' <= c && c <= 'f') hex
-isValidHex _ = False
+isValidHex (h : hex) = h == '#' && length hex == 6 && all (\c -> '0' <= c && c <= '9' || 'a' <= c && c <= 'f') hex
 
 isValidEyeColour ecl = ecl `elem` ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
