@@ -5,10 +5,11 @@ import qualified Data.Map.Strict as Map
 
 main = do
   input <- readFile "day_04.in"
+  let input' = map buildPassport $ splitOn "\n\n" input
   -- print $ naloga2 input
   -- naloga2 input
-  writeFile "day_04_1.out" $ show $ naloga1 input
-  writeFile "day_04_2.out" $ show $ naloga2 input
+  writeFile "day_04_1.out" $ show $ naloga1 input'
+  writeFile "day_04_2.out" $ show $ naloga2 input'
 
 --   writeFile "day_04_1.out" $ show $ map (concatMap (splitOn " ") . splitOn "\n") (splitOn "\n\n" input)
 
@@ -24,7 +25,7 @@ buildPassport s =
 verifyPassport :: Map.Map String String -> Bool
 verifyPassport = and . mapM Map.member ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
 
-naloga1 input = length . filter verifyPassport $ map buildPassport $ splitOn "\n\n" input
+naloga1 = length . filter verifyPassport
 
 isValidHeight hgt =
   let hgtUnit "" = ""
@@ -63,4 +64,4 @@ verifyPassportData passport =
     Just ecl = Map.lookup "ecl" passport
     Just pid = Map.lookup "pid" passport
 
-naloga2 input = length . filter verifyPassportData . filter verifyPassport $ map buildPassport $ splitOn "\n\n" input
+naloga2 = length . filter verifyPassportData . filter verifyPassport
