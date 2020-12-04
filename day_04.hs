@@ -9,10 +9,6 @@ main = do
   -- naloga2 input
   writeFile "day_04_1.out" $ show $ naloga1 input
   writeFile "day_04_2.out" $ show $ naloga2 input
-  print $ isValidHeight "190cm"
-  print $ isValidHeight "190in"
-  print $ isValidHeight "60cm"
-  print $ isValidHeight "60in"
 
 --   writeFile "day_04_1.out" $ show $ map (concatMap (splitOn " ") . splitOn "\n") (splitOn "\n\n" input)
 
