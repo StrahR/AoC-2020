@@ -1,4 +1,4 @@
-{-# LANGUAGE TupleSections #-}
+-- {-# LANGUAGE TupleSections #-}
 
 main = do
   input <- readFile "day_01.in"
