@@ -16,7 +16,7 @@ toNum = let
       bitVal 'R' = 1
    in aux . reverse . map bitVal
 
-naloga1 = foldr (max . toNum) 0
+naloga1 = maximum . map toNum
 
 naloga2 tickets =
     let tickets'@(h:_) = sort $ map toNum tickets
