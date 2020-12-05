@@ -31,10 +31,10 @@ isValidHeight hgt =
       hgtUnit ('c' : ss) = "cm"
       hgtUnit ('i' : ss) = "in"
       hgtUnit (_ : ss) = hgtUnit ss
-      hgtP "cm" hgt = "150cm" <= hgt && hgt <= "193cm"
-      hgtP "in" hgt = "59in" <= hgt && hgt <= "76in"
-      hgtP _ _ = False
-   in hgtP (hgtUnit hgt) hgt
+   in case hgtUnit hgt of
+        "cm" -> "150cm" <= hgt && hgt <= "193cm"
+        "in" -> "59in" <= hgt && hgt <= "76in"
+        _    -> False
 
 isValidHex (h : hex) = h == '#' && length hex == 6 && all (\c -> '0' <= c && c <= '9' || 'a' <= c && c <= 'f') hex
 
