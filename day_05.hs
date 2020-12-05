@@ -19,6 +19,7 @@ toNum =
 naloga1 = maximum . map toNum
 
 naloga2 tickets =
-    let tickets'@(h:_) = sort $ map toNum tickets
-        [(a, b)]       = filter (\(x, y) -> x - y /= 1) $ zip tickets' (h-1 : tickets')
+    let tickets'  = sort $ map toNum tickets
+        tickets'' = zip (tail tickets') tickets'
+        [(a, b)]  = filter (\(x, y) -> x - y /= 1) tickets''
      in quot (a + b) 2
