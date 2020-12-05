@@ -18,8 +18,7 @@ buildPassport s =
   let aux acc [] = acc
       aux acc (x : xs) =
         aux (Map.insert k v acc) xs
-        where
-          [k, v] = splitOn ":" x
+        where [k, v] = splitOn ":" x
    in aux Map.empty $ concatMap (splitOn " ") $ splitOn "\n" s
 
 verifyPassport :: Map.Map String String -> Bool
