@@ -53,7 +53,7 @@ countParents :: MultiMap String String -> Int
 countParents m =
   let aux visited []     = visited
       aux visited (x:xs) = aux (Set.insert x visited) (xs ++ Map.lookup x m)
-  in length $ aux Set.empty $ Map.lookup "shiny gold" m
+   in length $ aux Set.empty $ Map.lookup "shiny gold" m
 
 naloga1 = countParents . buildRulesBackwards . map parseRule
 
@@ -65,6 +65,6 @@ countChildren :: MultiMap [Char] (Int, [Char]) -> Int
 countChildren m =
   let aux k [] = k
       aux k ((n, x):xs) = aux (k + n) (xs ++ concat (replicate n (Map.lookup x m)))
-  in aux 0 $ Map.lookup "shiny gold" m
+   in aux 0 $ Map.lookup "shiny gold" m
 
 naloga2 = countChildren . buildRulesForwards . map parseRule
