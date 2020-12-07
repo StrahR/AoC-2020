@@ -1,7 +1,8 @@
 {-# LANGUAGE BlockArguments #-}
 
-import           Data.List.Split
-import qualified Data.Map.Strict as Map
+import           Data.List.Split (splitOn)
+import           Data.Map.Strict (Map)
+import qualified Data.Map.Strict as Map (empty, insert, lookup, member)
 
 main = do
   input <- readFile "day_04.in"
@@ -12,7 +13,7 @@ main = do
   writeFile "day_04_2.out" $ show $ naloga2 input'
 
 --   writeFile "day_04_1.out" $ show $ map (concatMap (splitOn " ") . splitOn "\n") (splitOn "\n\n" input)
-buildPassport :: String -> Map.Map String String
+buildPassport :: String -> Map String String
 buildPassport s =
   let aux acc [] = acc
       aux acc (x : xs) = aux (Map.insert k v acc) xs
@@ -20,7 +21,7 @@ buildPassport s =
           [k, v] = splitOn ":" x
    in aux Map.empty $ concatMap (splitOn " ") $ splitOn "\n" s
 
-verifyPassport :: Map.Map String String -> Bool
+verifyPassport :: Map String String -> Bool
 verifyPassport = and . mapM Map.member ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
 
 naloga1 = length . filter verifyPassport
@@ -41,7 +42,7 @@ isValidEyeColour ecl = ecl `elem` ["amb", "blu", "brn", "gry", "grn", "hzl", "ot
 
 isValidPid pid = length pid == 9 && all (\c -> '0' <= c && c <= '9') pid
 
-verifyPassportData :: Map.Map String String -> Bool
+verifyPassportData :: Map String String -> Bool
 verifyPassportData passport =
   and
     [ "1920" <= byr && byr <= "2002",

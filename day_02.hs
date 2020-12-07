@@ -1,4 +1,4 @@
-import           Data.List.Split
+import           Data.List.Split (splitOn)
 
 main = do
   input <- readFile "day_02.in"

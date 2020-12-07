@@ -1,5 +1,5 @@
 import           Data.List
-import           Data.List.Split
+import           Data.List.Split (splitOn)
 
 main = do
   input <- readFile "day_06.in"

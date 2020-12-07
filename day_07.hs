@@ -1,7 +1,6 @@
 import           Control.Applicative          (Alternative ((<|>)))
 import           Data.Char                    (digitToInt, isAlpha, isDigit,
                                                isSpace)
-import           Data.List                    ()
 import qualified Data.Map.Strict              as PlainMap (fromList)
 import           Data.MultiMap                (MultiMap)
 import qualified Data.MultiMap                as Map (fromList, fromMap, lookup,
