@@ -1,8 +1,8 @@
 import Control.Applicative
 import Data.Char
 import Data.List
-import qualified Data.Map.Strict as PlainMap (Map, empty, fromList, insert, lookup)
-import qualified Data.MultiMap as Map (MultiMap, empty, fromList, fromMap, insert, lookup, toList, toMap)
+import qualified Data.Map.Strict as PlainMap (Map, empty, fromList)
+import qualified Data.MultiMap as Map (MultiMap, empty, fromList, fromMap, lookup, toList)
 import qualified Data.Set as Set (Set, empty, insert, member)
 import Text.ParserCombinators.ReadP
 
