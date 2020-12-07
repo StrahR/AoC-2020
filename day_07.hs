@@ -37,7 +37,7 @@ rule = do
   ruleName <- name
   string " bags contain no other bags." <|> string " bags contain "
   contains <- option [] (many1 bagType)
-  _ <- eof
+  eof
   return (ruleName, contains)
 
 parseRule = fst . head . readP_to_S rule
