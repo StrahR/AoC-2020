@@ -1,4 +1,4 @@
-import Data.List.Split
+import           Data.List.Split
 
 main = do
   input <- readFile "day_02.in"
@@ -23,8 +23,8 @@ isValidPwd1 s =
 naloga1 = length . filter isValidPwd1
 
 atIndex :: Int -> String -> Char
-atIndex 1 s = head s
-atIndex n (s : ss) = atIndex (n - 1) ss
+atIndex 1 s        = head s
+atIndex n (_ : ss) = atIndex (n - 1) ss
 
 isValidPwd2 :: String -> Bool
 isValidPwd2 s =

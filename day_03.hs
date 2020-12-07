@@ -7,8 +7,8 @@ main = do
   writeFile "day_03_2.out" $ show $ naloga2 input'
 
 atIndex :: Int -> String -> Char
-atIndex 0 s = head s
-atIndex n (s : ss) = atIndex (n - 1) ss
+atIndex 0 s        = head s
+atIndex n (_ : ss) = atIndex (n - 1) ss
 
 count :: Eq a => a -> [a] -> Int
 count x = length . filter (== x)
@@ -28,8 +28,8 @@ isTree n s = '#' == atIndex (n `mod` length s) s
 
 diagonal :: Int -> Int -> [String] -> String
 diagonal k m =
-  let aux n [] = ""
-      aux n (x : xs) | n `mod` m /= 0 = aux (n + 1) xs
+  let aux _ [] = ""
+      aux n (_ : xs) | n `mod` m /= 0 = aux (n + 1) xs
       aux n (x : xs) =
         let i = (k * quot n m) `mod` length x
          in atIndex i x : aux (n + 1) xs

@@ -1,4 +1,4 @@
-import Data.List
+import           Data.List
 
 main = do
   input <- readFile "day_05.in"
@@ -8,7 +8,7 @@ main = do
 
 toNum :: String -> Int
 toNum =
-  let aux [] = 0
+  let aux []       = 0
       aux (x : xs) = x + 2 * aux xs
       bitVal 'F' = 0
       bitVal 'L' = 0
