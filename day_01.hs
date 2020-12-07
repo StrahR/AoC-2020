@@ -9,7 +9,7 @@ main = do
   writeFile "day_01_2.out" $ show $ naloga2 $ explode3 input'
 
 find :: (a -> Bool) -> [a] -> a
-find = head . filter
+find p = head . filter p
 
 -- naloga1 :: [(Int, Int)] -> Int
 naloga1 = uncurry (*) . find (\(a, b) -> a + b == 2020)
