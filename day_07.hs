@@ -49,10 +49,7 @@ buildRules = foldl (\map (parent, children) -> foldl (\m c -> Map.insert (snd c)
 
 floodFill1 m =
   let aux visited [] = visited
-      aux visited (x : xs) =
-        if Set.member x visited
-          then aux visited xs
-          else aux (Set.insert x visited) (xs ++ Map.lookup x m)
+      aux visited (x : xs) = aux (Set.insert x visited) (xs ++ Map.lookup x m)
    in aux Set.empty $ Map.lookup "shiny gold" m
 
 naloga1 = length . floodFill1 . buildRules . map (fst . head) . filter (not . null) . map parseRule
@@ -61,8 +58,7 @@ buildRules' = Map.fromMap . foldl (\m (parent, children) -> PlainMap.insert pare
 
 floodFill2 m =
   let aux k [] = k
-      aux k ((n, x) : xs) =
-        aux (k + n) (xs ++ concat (replicate n (Map.lookup x m)))
+      aux k ((n, x) : xs) = aux (k + n) (xs ++ concat (replicate n (Map.lookup x m)))
    in aux 0 $ Map.lookup "shiny gold" m
 
 naloga2 = floodFill2 . buildRules' . map (fst . head) . filter (not . null) . map parseRule
