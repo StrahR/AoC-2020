@@ -5,14 +5,14 @@ main = do
   writeFile "day_09_1.out" $ show $ naloga1 input' n
   writeFile "day_09_2.out" $ show $ naloga2 input' n
 
-isSum n xs = not $ null [(a,b) | a <- xs, b <- xs, a >= b, a + b == n]
+isSum :: Int -> [Int] -> Bool
+isSum n xs = not $ null [(a,b) | a <- xs, b <- xs, a + b == n]
 
 naloga1 xs n =
-  let aux acc xs | length xs <= n = acc
-      aux acc (x : xs) =
-        if isSum x (take n xs)
-          then aux acc xs
-          else aux (x : acc) xs
+  let aux acc (x : xs)
+        | length xs < n       = acc
+        | isSum x (take n xs) = aux acc xs
+        | otherwise           = aux (x : acc) xs
    in head $ aux [] (reverse xs)
 
 naloga2 xs n =
