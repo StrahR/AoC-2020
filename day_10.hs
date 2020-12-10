@@ -21,13 +21,10 @@ blockArrangements n = [1, 1, 1, 2, 4, 7, 13, 24] !! n
 -- reversed
 blockLengths :: [Int] -> [Int]
 blockLengths xs =
-  let aux acc lens (x1 : xs@(x2 : _))
-        | x2 - x1 == 1 = aux (1+acc)        lens  xs
-        | otherwise    = aux      1  (acc : lens) xs
-      aux acc lens _ = acc : lens
+  let aux len lengths (x1 : xs@(x2 : _))
+        | x2 - x1 == 1 = aux (len+1)        lengths  xs
+        | otherwise    = aux      1  (len : lengths) xs
+      aux len lengths _ = len : lengths
    in aux 1 [] xs
 
-naloga2 xs =
-  let aux acc []     = acc
-      aux acc (n:ns) = aux (acc * blockArrangements n) ns
-   in aux 1 $ blockLengths xs
+naloga2 = product . map blockArrangements . blockLengths
