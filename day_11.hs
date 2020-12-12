@@ -8,28 +8,18 @@ instance Read Seat where
   readsPrec _ ('L' : k) = [(Empty, k)]
   readsPrec _ ('#' : k) = [(Full, k)]
 
-instance Show Seat where
-  showList []          s = s
-  showList (c : tl) s    = show c ++ showList tl s
-  showsPrec _ Null  s = '.' : s
-  showsPrec _ Empty s = 'L' : s
-  showsPrec _ Full  s = '#' : s
-
 main = do
   input <- readFile "day_11.in"
-  -- print $ show (read "L" :: Seat)
-  -- print $ show (read ".." :: [Seat])
-  -- putStrLn . unlines $ map show $ fix step input'
   let input' = map read $ lines input :: [[Seat]]
   writeFile "day_11_1.out" $ show $ naloga1 input'
   writeFile "day_11_2.out" $ show $ naloga2 input'
+
+cardinalDirs = [ (-1, -1), ( 0, -1), ( 1, -1), (-1,  0), ( 1,  0), (-1,  1), ( 0,  1), ( 1,  1) ]
 
 (!!!) :: [a] -> Int -> Maybe a
 (!!!) [] _       = Nothing
 (!!!) (x : _) 0  = Just x
 (!!!) (_ : xs) n = xs !!! (n-1)
-
-cardinalDirs = [ (-1, -1), ( 0, -1), ( 1, -1), (-1,  0), ( 1,  0), (-1,  1), ( 0,  1), ( 1,  1) ]
 
 getStatus :: [[Seat]] -> Int -> Int -> Maybe Seat
 getStatus grid x y = grid !!! y >>= (!!! x)
