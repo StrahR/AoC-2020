@@ -6,31 +6,34 @@ main = do
 
 cardinalDirs = "NESW"
 
-moveShip ('N' : n) dir          (ns, ew) = ((ns + read n, ew         ), dir)
-moveShip ('S' : n) dir          (ns, ew) = ((ns - read n, ew         ), dir)
-moveShip ('E' : n) dir          (ns, ew) = ((ns         , ew + read n), dir)
-moveShip ('W' : n) dir          (ns, ew) = ((ns         , ew - read n), dir)
-moveShip ('R' : n) dir          (ns, ew) = ((ns, ew), rotate dir $ read n)
-moveShip ('L' : n) dir          (ns, ew) = ((ns, ew), rotate dir $ 360 - read n)
-moveShip ('F' : n) dir@(dx, dy) (ns, ew) = ((ns + dx*read n, ew + dy*read n), dir)
+move :: Char -> String -> (Int, Int) -> (Int, Int)
+move 'N' n (ns, ew) = (ns + read n, ew         )
+move 'S' n (ns, ew) = (ns - read n, ew         )
+move 'E' n (ns, ew) = (ns         , ew + read n)
+move 'W' n (ns, ew) = (ns         , ew - read n)
 
+rotate :: (Int, Int) -> Int -> (Int, Int)
 rotate (dx, dy) 0 = (dx, dy)
 rotate (dx, dy) n = rotate (-dy, dx) (n - 90)
 
+moveShip :: String -> (Int, Int) -> (Int, Int) -> ((Int, Int), (Int, Int))
+moveShip ('R' : n) ship     waypoint = moveWaypoint ('R' : n) waypoint ship
+moveShip ('L' : n) ship     waypoint = moveWaypoint ('L' : n) waypoint ship
+moveShip ('F' : n) (ns, ew) (dx, dy) = ((ns + dx*read n, ew + dy*read n), (dx, dy))
+moveShip (dir : n) ship     waypoint = (move dir n ship, waypoint)
+
+moveWaypoint :: String -> (Int, Int) -> (Int, Int) -> ((Int, Int), (Int, Int))
+moveWaypoint ('R' : n) waypoint ship = (ship, rotate waypoint $ read n)
+moveWaypoint ('L' : n) waypoint ship = (ship, rotate waypoint $ 360 - read n)
+moveWaypoint ('F' : n) waypoint ship = moveShip ('F' : n) ship waypoint
+moveWaypoint (dir : n) waypoint ship = (ship, move dir n waypoint)
+
 naloga1 =
-  let aux ((ns, ew), _  ) []    = abs ns + abs ew
-      aux (ship    , wp) (x:xs) = aux (moveShip x wp ship) xs
+  let aux ((ns, ew), _ ) []     = abs ns + abs ew
+      aux (ship    , wp) (x:xs) = aux (moveShip x ship wp) xs
    in aux ((0, 0), (0, 1))
 
-moveWaypoint ('N' : n) (ns, ew) ship     = ((ns + read n, ew         ), ship)
-moveWaypoint ('S' : n) (ns, ew) ship     = ((ns - read n, ew         ), ship)
-moveWaypoint ('E' : n) (ns, ew) ship     = ((ns         , ew + read n), ship)
-moveWaypoint ('W' : n) (ns, ew) ship     = ((ns         , ew - read n), ship)
-moveWaypoint ('R' : n) waypoint ship     = (rotate waypoint $ read n      , ship)
-moveWaypoint ('L' : n) waypoint ship     = (rotate waypoint $ 360 - read n, ship)
-moveWaypoint ('F' : n) (dx, dy) (ns, ew) = ((dx, dy), (ns + dx*read n, ew + dy*read n))
-
 naloga2 =
-  let aux (_, (ns, ew)) []          = abs ns + abs ew
-      aux (waypoint, ship) (x : xs) = aux (moveWaypoint x waypoint ship) xs
-   in aux ((1, 10), (0, 0))
+  let aux ((ns, ew), _       ) []       = abs ns + abs ew
+      aux (ship    , waypoint) (x : xs) = aux (moveWaypoint x waypoint ship) xs
+   in aux ((0, 0), (1, 10))
