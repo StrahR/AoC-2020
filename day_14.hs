@@ -10,7 +10,7 @@ main = do
   writeFile "day_14_1.out" $ show $ naloga1 input
   writeFile "day_14_2.out" $ show $ naloga2 input
 
-replace what with =  map (\c -> if c == what then with else c)
+replace what with = map (\c -> if c == what then with else c)
 
 toBin :: Int -> String
 toBin n =
@@ -21,11 +21,10 @@ toBin n =
 
 toNum :: String -> Int
 toNum =
-  let aux []       = 0
-      aux (x : xs) = x + 2 * aux xs
-      bitVal '0' = 0
-      bitVal '1' = 1
-   in aux . reverse . map bitVal
+  let aux []         = 0
+      aux ('0' : xs) = 0 + 2 * aux xs
+      aux ('1' : xs) = 1 + 2 * aux xs
+   in aux . reverse
 
 applyMask :: String -> String -> IntMap Int -> IntMap Int
 applyMask cmd mask = Map.insert n (v .&. toNum mask1 .|. toNum mask0)
@@ -42,6 +41,7 @@ naloga1 =
         | "mem[" `isPrefixOf` cmd = aux (applyMask cmd mask mem) mask cmds
    in aux Map.empty ""
 
+applyMask'' :: String -> String -> String -> String
 applyMask'' mask base n = [if (b == 'X') || (m == '1') then m else d | (m, b, d) <- zip3 mask base n]
 
 genAllAddresses :: String -> Int -> [Int]
