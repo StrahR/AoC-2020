@@ -3,7 +3,6 @@ import           Data.IntMap.Strict (IntMap)
 import qualified Data.IntMap.Strict as Map (elems, empty, fromList, insert,
                                             union)
 import           Data.List          (elemIndex, isPrefixOf)
-import qualified Data.List          as List
 
 main = do
   input <- lines <$> readFile "day_14.in"
