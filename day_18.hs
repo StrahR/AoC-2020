@@ -60,6 +60,7 @@ exp2' = do
       exp1'
     ]
 
+exp1' :: ReadP Integer
 exp1' = do
   choice
     [ binop exp0' "+" exp1' (+),
