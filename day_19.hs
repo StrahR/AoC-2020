@@ -3,12 +3,11 @@
 
 import Control.Applicative (Alternative ((<|>)))
 import Data.Char
-import Data.IntMap ((!))
-import qualified Data.IntMap as Map (fromList, insert)
+import Data.IntMap (IntMap, (!))
+import qualified Data.IntMap as Map (fromList)
 import Data.List.Split
 import Text.ParserCombinators.ReadP
   ( ReadP,
-    choice,
     eof,
     many,
     many1,
@@ -25,50 +24,48 @@ data Parser
   | Alternative (Parser, Parser)
   deriving (Eq, Show, Read)
 
-instance Show (ReadP Parser) where
-  showsPrec _ _ ss = ss
-
 main = do
   input <- splitOn "\n\n" <$> readFile "day_19.in"
   let parsers = lines $ head input
   let input' = lines $ input !! 1
-  -- print $ naloga1 ["0: \"a\""] ["a", "b", "aa", "ab"]
-  -- print $ naloga1 ["0: 1 2", "1: \"a\"", "2: \"b\""] ["a", "b", "aa", "ab"]
-  -- print $ naloga1 ["0: 1 2 | 2 1", "1: \"a\"", "2: \"b\""] ["a", "b", "aa", "ab", "ba", "bb"]
-  -- naloga1 ["0: 1 2 | 2 1", "1: \"a\"", "2: \"b\""] ["a", "b", "aa", "ab", "ba", "bb"]
-  -- naloga1 parsers input'
   writeFile "day_19_1.out" $ show $ naloga1 parsers input'
   writeFile "day_19_2.out" $ show $ naloga2 parsers input'
 
 number :: ReadP Int
 number = read <$> many1 (satisfy isDigit)
 
+spaces :: ReadP String
 spaces = many (satisfy isSpace)
 
+ruleLiteral :: ReadP Parser
 ruleLiteral = do
   string "\""
   c <- satisfy isAlpha
   string "\""
   return $ Literal c
 
+ruleSeq :: ReadP Parser
 ruleSeq = do
   n1 <- number
   satisfy isSpace
   n2 <- number
   return $ Seq (n1, n2)
 
+ruleSeq3 :: ReadP Parser
 ruleSeq3 = do
   Seq (n1, n2) <- ruleSeq
   satisfy isSpace
   n3 <- number
   return $ Seq3 (n1, n2, n3)
 
+ruleOpt :: ReadP Parser
 ruleOpt = do
   p1 <- Exactly <$> number <|> ruleSeq <|> ruleSeq3
   string " | "
   p2 <- Exactly <$> number <|> ruleSeq <|> ruleSeq3
   return $ Alternative (p1, p2)
 
+rule :: ReadP (Int, Parser)
 rule = do
   n <- number
   string ": "
@@ -76,6 +73,7 @@ rule = do
   eof
   return (n, p)
 
+tryParse :: IntMap Parser -> String -> [String]
 tryParse parsers ss =
   let parse [] _ = []
       parse acc parser =
@@ -90,12 +88,6 @@ tryParse parsers ss =
 
 naloga1 parserRules input =
   let parsers = Map.fromList $ map (fst . head . readP_to_S rule) parserRules
-   in length $ filter (\(_, out) -> out == [""]) $ zip input (map (tryParse parsers) input)
+   in length $ filter (\(_, out) -> "" `elem` out) $ zip input (map (tryParse parsers) input)
 
--- mapM_ (\s -> do print $ readP_to_S rule s) parserRules
-
-naloga2 parserRules input =
-  let parsers = Map.fromList $ map (fst . head . readP_to_S rule) parserRules
-   in let parsers' = Map.insert 8 (snd . fst . head $ readP_to_S rule "8: 42 | 42 8") parsers
-       in let parsers'' = Map.insert 11 (snd . fst . head $ readP_to_S rule "11: 42 31 | 42 11 31") parsers'
-           in length $ filter (\(_, out) -> "" `elem` out) $ zip input (map (tryParse parsers'') input)
+naloga2 parserRules = naloga1 (parserRules ++ ["8: 42 | 42 8", "11: 42 31 | 42 11 31"])
